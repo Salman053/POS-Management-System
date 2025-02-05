@@ -1,4 +1,3 @@
-// LoginPage.tsx
 import React, { useState } from 'react';
 import CustomInput from '@/components/shared/CustomInput';
 import { toast } from 'react-toastify';
@@ -10,9 +9,9 @@ import { MainContextType } from '@/types';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const { setCurrentUser } = useMainContext() as MainContextType
-  const [loading, setLoading] = useState<boolean>(false)
-  const navigate = useNavigate(); // Get navigate function
+  const { setCurrentUser } = useMainContext() as MainContextType;
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -58,71 +57,57 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validateForm()) {
-      setLoading(true); // Ensure loading state is managed
+      setLoading(true);
       logIn(formData.email, formData.password)
         .then((user) => {
           if (user) {
-            console.log('Form submitted:', user);
             setCurrentUser(user);
-            navigate('/shop/home', { replace: true }); // Use navigate for redirection
+            navigate('/shop/home', { replace: true });
           }
         })
         .catch((error) => {
-          console.error("Login failed:", error);
+          console.error('Login failed:', error);
         })
         .finally(() => setLoading(false));
     }
-
   };
 
   return (
-    <div className="min-h-screen select-none md:grid grid-cols-2   bg-gray-50 ">
-      <div className="w-full space-y-8 h-full flex flex-col md:px-32 px-12 mt-12 md:mt-0 justify-center">
-        <div>
-          <h2 className=" text-center text-2xl font-semibold text-gray-900">Eazy POS Solution</h2>
-          <h2 className=" text-center text-lg font-normal text-gray-900">Sign in to your account</h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <CustomInput
-            disabled={loading}
-            label="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            error={errors.email}
-          />
-          <CustomInput
-            label="Password"
-            name="password"
-            type="password"
-            disabled={loading}
-            value={formData.password}
-            onChange={handleInputChange}
-            error={errors.password}
-          />
-          <div>
-            <Button
+    <div className="flex flex-col md:flex-row min-h-screen select-none bg-gray-50">
+      {/* Left Section */}
+      <div className="flex flex-col flex-1 px-5 justify-center md:w-1/2 md:px-24 bg-blue-500  md:rounded-r-xl ">
+        <div className="px-8 bg-white   py-12  rounded-2xl shadow-lg">
+          <h2 className="text-center text-3xl font-bold">Eazy POS Solution</h2>
+          <h3 className="text-center text-lg mt-2 font-medium">Sign in to your account</h3>
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <CustomInput
               disabled={loading}
-              type="submit"
-              className='w-full'
-            >
+              label="Email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              error={errors.email}
+            />
+            <CustomInput
+              label="Password"
+              name="password"
+              type="password"
+              disabled={loading}
+              value={formData.password}
+              onChange={handleInputChange}
+              error={errors.password}
+            />
+            <Button disabled={loading} type="submit" className="w-full ">
               Sign in &nbsp;{loading && <RotateCcw className='animate-spin' />}
             </Button>
-          </div>
-        </form>
-        {/* <p className="text-sm text-center cursor-pointer text-gray-600">
-            Don't have an account? &nbsp;
-            <span onClick={() => {
-              toast("This Feature is not Available", { type: "warning" });
-            }} className="font-medium text-indigo-600 hover:text-indigo-500">
-              Register here
-            </span>
-          </p> */}
+          </form>
+        </div>
       </div>
-      <div className='h-full hidden overflow-hidden md:block  bg-red-50'>
-        <img src="https://images.unsplash.com/photo-1728044849280-10a1a75cff83?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" className='h-full w-full  object-cover zoom-animation' alt="" />
+      {/* Right Section */}
+      <div className="hidden md:block md:w-1/2">
+        <img src="https://images.unsplash.com/photo-1728044849280-10a1a75cff83?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          className="w-full h-full object-cover rounded-l-xl shadow-lg" alt="Login Illustration" />
       </div>
     </div>
   );
