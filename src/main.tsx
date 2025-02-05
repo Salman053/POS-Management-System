@@ -12,7 +12,6 @@ createRoot(document.getElementById('root')!).render(
       <MainContextProvider>
         <App />
         <ToastContainer className={'text-sm '} draggable limit={2} />
-
       </MainContextProvider>
     </StrictMode>
   </BrowserRouter>,

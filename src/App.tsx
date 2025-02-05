@@ -28,18 +28,7 @@ const App = () => {
     );
   }
 
-  useEffect(() => {
-    const handleTabClose = () => {
-      signOut(auth);
-    };
-
-    window.addEventListener("beforeunload", handleTabClose);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleTabClose);
-    };
-  }, []);
-
+ 
 
   // Protected routes
   return (
@@ -50,7 +39,6 @@ const App = () => {
         <div className="content-area max-w-[100vw] max-h-[calc(100vh-4rem)] overflow-y-auto">
           <Routes>
             <Route path="/shop/*" element={<ClientRoutes />} />
-            <Route path="/" element={<Navigate replace to="/shop/home" />} />
             <Route path="*" element={<Navigate replace to="/shop/home" />} />
           </Routes>
         </div>
