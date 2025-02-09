@@ -7,7 +7,7 @@ interface CustomTextAreaProps {
   value: string | number;
   inputClassName?: string;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  error?: string | boolean;
+  error?: string | boolean | any;
   type?: "text" | "number" | "password" | "email" | "tel" | "checkbox" | "date";
   placeholder?: string;
   className?: string;

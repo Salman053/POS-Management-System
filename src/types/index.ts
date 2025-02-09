@@ -1,7 +1,13 @@
 // Define the type for our context state
 export type MainContextType = {
   currentUser: any;
+  expenses: ExpenseType[]
+  dues: DuesType[]
+  payments: PaymentType[]
+  customers: CustomerType[]
+  products: ProductType[]
   setCurrentUser: any;
+  loading: boolean
   theme: string;
   toggleTheme: () => void;
   isSidebarOpen: boolean;
@@ -15,7 +21,7 @@ export type MainContextType = {
 
 export type CustomAvatarStackProps = {
   users: {
-    id: string;
+    docId: string;
     src: string;
     name: string;
     status?: "active" | "inactive" | "enrolled";
@@ -25,76 +31,66 @@ export type CustomAvatarStackProps = {
 
 export type UseToggle = [boolean, () => void];
 
+export interface ProductType {
+  docId?: string;
+  barcode: string;
+  productName: string;
+  productCategory: string;
+  purchasePrice: number;
+  salesPrice: number;
+  quantity: number;
+  id?: string;
 
-
-export interface Attachment {
-  id: string;
-  name: string;
-  url: string;
-  type: string;
+  alertQuantity: number;
+  productImage: File | string | any; // string for URLs of existing images
+  userId: string;
+  createdAt?: string;
+  updatedAt?: string;
+  isActive?: boolean;
+  description?: string;
+  supplier?: string;
+  featured: string
 }
 
-export interface Class {
-  id: string;
-  title: string;
-  attachments: Attachment[];
+export interface ExpenseType {
+  docId?: string;
+  id?: string;
+  date: string;
+  category: string;
+  amount: number;
+  reference?: string;
+  note?: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface Module {
-  id: string;
-  title: string;
-  classes: Class[];
+export interface CustomerType {
+  docId?: string;
+  customerName: string;
+  address?: string;
+  contactNo: string;
+  note?: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  totalDues: number;
+  totalPayments: number;
 }
 
-export interface CourseModulesForm {
-  modules: Module[];
-}
-export interface Attachment {
-  id: string;
-  file: File;
-}
 
+export interface PaymentType {
+  amount: number;
+  docId?: string;
 
-
-export type BaseEvent = {
-  id: string;
-  timestamp: string;
-  status: 'APPROVED' | 'SUBMITTED' | 'RESOLVED' | 'PENDING';
-  actor: {
-    name: string;
-    type: 'Student' | 'Company';
-    avatar: string;
-  };
+  date: string;
+  description?: string;
+  customerId: string;
+  userId: string;
 }
 
-export type ApprovalEvent = BaseEvent & {
-  type: 'approval';
-  studentId: string;
-}
 
-export type JobApplicationEvent = BaseEvent & {
-  type: 'job-application';
-  studentId: string;
-  jobTitle: string;
-  company: string;
-}
-
-export type ProjectEvent = BaseEvent & {
-  type: 'project';
-  projectTitle: string;
-  companyName: string;
-}
-
-export type ReportEvent = BaseEvent & {
-  type: 'report';
-  studentId: string;
-  companyName: string;
-  reason: string;
-}
-
-export type Event = ApprovalEvent | JobApplicationEvent | ProjectEvent | ReportEvent;
-
-
+export interface DuesType extends PaymentType {}
 export type DataTableColumnProps = {
   label: string;
   key: string;

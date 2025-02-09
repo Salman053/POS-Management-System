@@ -2,6 +2,9 @@
 @tailwind components;
 
 
+body{
+  overflow-y: hidden;
+}
 
 /* Chrome, Edge and Safari */
 *::-webkit-scrollbar {

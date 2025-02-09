@@ -17,7 +17,7 @@ export const NavTabs = [
   },
   {
     path: '/shop/expanses',
-    label: 'Expanse',
+    label: 'Expense',
     icon: Wallet,
     filledIcon: Wallet
   },
@@ -45,15 +45,33 @@ export const NavTabs = [
 
 
 ]
+export const EXPENSE_CATEGORIES = [
+  'Rent',
+  'Staff Salary',
+  'Utilities',
+  'Inventory Purchase',
+  'Equipment Maintenance',
+  'POS Software',
+  'Bank Charges',
+  'Cleaning Supplies',
+  'Packaging Materials',
+  'Internet & Phone',
+  'Security',
+  'Marketing & Ads',
+  'Insurance',
+  'Training',
+  'Other'
+] as const;
 
 
+export type ExpenseCategory = typeof EXPENSE_CATEGORIES[number];
 
 
 
 
 
 export const productsColumns: DataTableColumnProps[] = [
-  { label: "Name", key: "name", sortable: true, },
+  { label: "Name", key: "productName", sortable: true, },
   { label: "Quantity", key: "quantity", sortable: true },
   {
     label: "Alert Quantity",
@@ -62,9 +80,11 @@ export const productsColumns: DataTableColumnProps[] = [
   },
   { label: "Purchase Price", key: "purchasePrice", sortable: true },
   { label: "Sales Price", key: "salesPrice", sortable: true },
-  { label: "Stock Worth", key: "stockWorth", sortable: true }, {
+  // { label: "Stock Worth", key: "stockWorth", sortable: true },
+  { label: "Category", key: "productCategory", sortable: true },
+   {
     label: "Image",
-    key: "image",
+    key: "productImage",
     sortable: false,
   }]
 
@@ -268,7 +288,7 @@ export const expensesRows = [
 export const customerColumns: DataTableColumnProps[] = [
   {
 
-    key: "name",
+    key: "customerName",
     label: "Name",
     sortKey: "name",
     sortable: true
@@ -280,12 +300,17 @@ export const customerColumns: DataTableColumnProps[] = [
   }
   , {
     label: "Phone",
-    key: "phone",
+    key: "contactNo",
     sortable: true
   },
   {
     label: "Dues",
-    key: "dues",
+    key: "totalDues",
+    sortable: true
+  },
+  {
+    label: "Paid",
+    key: "totalPayments",
     sortable: true
   },
   {
@@ -692,17 +717,17 @@ export const DashboardRecentSalesData = [
 export const dashboardCustomerColumns: DataTableColumnProps[] = [
   {
     label: "Name",
-    key: "name",
+    key: "customerName",
     sortable: true
   },
   {
     label: "Dues",
-    key: "dues",
+    key: "totalDues",
     sortable: true
   }
   , {
     label: "Phone",
-    key: "phone",
+    key: "contactNo",
     sortable: true
   }
 

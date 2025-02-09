@@ -6,14 +6,13 @@ import useScrollToTop from "./hooks/use-scroll-restore";
 import AuthRoutes from "./routes/auth-routes/AuthRoutes";
 import { useMainContext } from "./context/MainContext";
 import { MainContextType } from "./types";
-import { useEffect } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "./firebase";
 
 const App = () => {
   const location = useLocation();
   const { currentUser } = useMainContext() as MainContextType;
 
+
+  // scroll to top
   useScrollToTop(location.pathname, '.content-area');
 
 

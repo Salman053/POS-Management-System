@@ -16,7 +16,7 @@ type CustomSelectProps = {
   options: OptionType[];
   onChange?: (value: string) => void;
   onBlur?: FocusEventHandler<HTMLSelectElement>;
-  error?: string | boolean;
+  error?: string | boolean|any;
   touched?: boolean;
   label?: string;
   placeholder?: string;

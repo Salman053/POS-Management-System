@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import Overlay from "./Overlay";
+import { Loader } from "lucide-react";
 
 type ConfirmationDialogProps = {
   message?: string;
@@ -13,6 +14,7 @@ type ConfirmationDialogProps = {
   contentClassName?: string;
   messageHeading?: string;
   actionText?: string;
+  disable?: boolean;
 };
 
 const ConfirmationDialog = ({
@@ -20,17 +22,18 @@ const ConfirmationDialog = ({
   onActionClick,
   isOpen,
   onOpenChange,
+  disable=false,
   contentClassName,
   messageHeading = "Are you sure?",
   actionText = "Confirm",
   className,
-  
+
   messageClassName,
   actionTextClassName,
 }: ConfirmationDialogProps) => {
   return (
     <Overlay
-    //   variant="fadeInUp"
+      //   variant="fadeInUp"
       isOpen={isOpen}
       onClose={onOpenChange}
       contentClassName={cn(
@@ -54,6 +57,7 @@ const ConfirmationDialog = ({
         </p>
         <div className="flex items-center gap-4 mt-5 justify-end">
           <Button
+            disabled={disable}
             variant="outline"
             onClick={onOpenChange}
             className="hover:bg-gray-100 transition-colors"
@@ -61,6 +65,7 @@ const ConfirmationDialog = ({
             Cancel
           </Button>
           <Button
+            disabled={disable}
             variant="destructive"
             onClick={onActionClick}
             className={cn(
@@ -68,11 +73,11 @@ const ConfirmationDialog = ({
               actionTextClassName
             )}
           >
-            {actionText}
+            {actionText} {disable ? <Loader className="animate-spin"/>:""}
           </Button>
         </div>
       </div>
-    </Overlay>  
+    </Overlay>
   );
 };
 

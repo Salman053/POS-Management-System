@@ -36,7 +36,7 @@ const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
       sessionStorage.removeItem('currentUser');
     }
   }, [currentUser]);
-  
+
 
   // Toggle theme between 'light' and 'dark'
   const toggleTheme = () => {
@@ -49,18 +49,22 @@ const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
 
-  const { users, loading, error } = useFirestoreData()
+  const { users, loading, error, products, expenses, customers, dues, payments } = useFirestoreData()
   // Define the values to provide through context
   const contextValue = {
     theme,
+    products,
     toggleTheme,
     isSidebarOpen,
     currentUser,
     setCurrentUser,
+    customers,
+    expenses,
     toggleSidebar,
     userPreferences,
     setUserPreferences,
     users, loading, error
+    , dues, payments
     // Add other global state or actions here
   };
 

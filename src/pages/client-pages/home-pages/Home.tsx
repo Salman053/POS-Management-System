@@ -4,11 +4,15 @@ import DashboardCard from '@/components/shared/DashboardCard'
 import DataTable from '@/components/shared/DataTable';
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { dashboardCustomerColumns, dashboardCustomerData, DashboardRecentSalesColumns, DashboardRecentSalesData } from '@/constants/customerConstants';
+import { useMainContext } from '@/context/MainContext';
+import { MainContextType } from '@/types';
 import { Users, ShoppingBag, DollarSign, ChartLine, } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 const Home = () => {
-
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { customers } = useMainContext() as MainContextType
   const chartData = [
     { name: 'Jan', revenue: 4000, profit: 2400, expense: 1500 },
     { name: 'Feb', revenue: 3000, profit: 2210, expense: 1200 },
@@ -29,7 +33,7 @@ const Home = () => {
       icon: <ChartLine size={24} />, label: 'Revenue', value: '25,600', isCurrency: true, description: 'Total revenue this month', trend: 'up' as 'up'
     },
     {
-      icon: <Users size={24} />, label: 'Customers', value: '10', description: 'Customer in system', trend: 'up' as 'up'
+      icon: <Users size={24} />, label: 'Customers', value: customers.length, description: 'Customer in system', trend: 'down' as 'down'
     },
     {
       icon: <ShoppingBag size={24} />, label: 'Sales', value: '4,320', description: 'Total sales placed', trend: 'down' as 'down'
@@ -45,6 +49,15 @@ const Home = () => {
       View Details
     </span>
   )
+
+  useEffect(() => {
+    if (customers?.length === 0) {
+      setIsLoading(true)
+    }
+    else {
+      setIsLoading(false)
+    }
+  }, [customers])
   return (
     <div className='page-container'>
       <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-7'>
@@ -63,7 +76,7 @@ const Home = () => {
         </CardHeader>
         <CardContent className='p-0 pr-5 pb-5'>
           <ResponsiveContainer width="100%" height={400}>
-            <BarChart  data={chartData}>
+            <BarChart data={chartData}>
               <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false}
                 tickMargin={12}
               />
@@ -74,10 +87,10 @@ const Home = () => {
                 axisLine={false}
                 tickFormatter={(value) => `${value}`}
               />
-              <Tooltip cursor={false} contentStyle={{ fontSize: 12, borderRadius: 10 ,textTransform:"capitalize" }} />
+              <Tooltip cursor={false} contentStyle={{ fontSize: 12, borderRadius: 10, textTransform: "capitalize" }} />
               <Bar animationEasing='ease-out' animationDuration={500} dataKey="revenue" fill="#2563EB" radius={5} />  {/* Deep Royal Blue */}
               <Bar dataKey="profit" animationEasing='ease-out' animationDuration={500} fill="#16A34A" radius={5} />  {/* Rich Emerald Green */}
-              <Bar dataKey="expense"  animationEasing='ease-out' animationDuration={500} fill="#DC2626" radius={5} />  {/* Bold Crimson Red */}
+              <Bar dataKey="expense" animationEasing='ease-out' animationDuration={500} fill="#DC2626" radius={5} />  {/* Bold Crimson Red */}
 
             </BarChart>
           </ResponsiveContainer>
@@ -100,11 +113,11 @@ const Home = () => {
         <Card>
           <CardHeader>
             <h4 className='heading-4'>
-              Recent Sales
+              Customers
             </h4>
           </CardHeader>
           <CardContent>
-            <DataTable actions={actions} pagination={false} selectable={false} columns={dashboardCustomerColumns} rows={dashboardCustomerData} />
+            <DataTable isLoading actions={actions} pagination={false} selectable={false} columns={dashboardCustomerColumns} rows={customers} />
           </CardContent>
 
         </Card>

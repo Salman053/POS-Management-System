@@ -13,6 +13,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Loader,
 } from "lucide-react";
 import no_data from '@/assets/nodata.webp'
 import { cn } from "@/lib/utils";
@@ -32,6 +33,7 @@ interface DataTableProps {
   columns: TableColumn[];
   rows: TableRow[];
   headerClassName?: string;
+  isLoading?: boolean;
   actions?: (row: TableRow) => JSX.Element;
   onRowSelect?: (selectedRows: TableRow[]) => void;
   itemsPerPageOptions?: number[];
@@ -56,7 +58,7 @@ const TableHeader = memo(({
   <thead className={"text-[#525866]  uppercase"}>
     <tr>
       {selectable && (
-        <th className={cn("px-4 py-2 ",headerClassName)}>
+        <th className={cn("px-4 py-2 ", headerClassName)}>
           <Checkbox
             className="bg-white  border-gray-1/20 border-2  rounded-md outline-none"
             onCheckedChange={toggleSelectAll}
@@ -250,6 +252,7 @@ const DataTable: React.FC<DataTableProps> = memo(({
   actions,
   pagination = true,
   selectable = true,
+  isLoading = false,
   onRowSelect,
   itemsPerPageOptions = [10, 20, 30, 50],
   defaultItemsPerPage = 10,
@@ -312,7 +315,10 @@ const DataTable: React.FC<DataTableProps> = memo(({
 
   const toggleSelectAll = useCallback(() => {
     setSelectedRows((prev) => {
-      const newSelection = prev.size === paginatedRows?.length ? new Set() : new Set(paginatedRows.map((_, index) => index));
+      const newSelection = prev.size === paginatedRows?.length
+        ? new Set<number>()
+        : new Set<number>(paginatedRows.map((_, index) => index));
+
       if (onRowSelect) {
         onRowSelect(newSelection.size ? paginatedRows : []);
       }
@@ -352,16 +358,19 @@ const DataTable: React.FC<DataTableProps> = memo(({
             handleSort={handleSort}
           />
           <tbody>
-            {paginatedRows.length === 0 ? (
-              <tr>
-                <td colSpan={columns.length + (selectable ? 1 : 0) + (actions ? 1 : 0)} className="text-center py-4 lowercase first-letter:capitalize">
-                  <div className="flex flex-col items-center justify-center">
-                    <img src={no_data} className="w-[20%]" />
-                    {/* It Seems Like You Don&apos;t Have Any Data */}
-                  </div>
-                </td>
-              </tr>
-            ) : (
+            {
+            // paginatedRows.length === 0 ? (
+            //   <tr>
+            //     <td colSpan={columns.length + (selectable ? 1 : 0) + (actions ? 1 : 0)} className="text-center py-4 lowercase first-letter:capitalize">
+            //       {isLoading ? <Loader className="animate-spin" /> : <div className="flex flex-col items-center justify-center">
+            //         <img src={no_data} className="w-[20%]" />
+
+            //         {/* It Seems Like You Don&apos;t Have Any Data */}
+            //       </div>}
+            //     </td>
+            //   </tr>
+            // ) : 
+            (
               paginatedRows.map((row, rowIndex) => (
                 <TableRow
                   key={rowIndex}

@@ -46,7 +46,7 @@ const CustomSearchInput = ({
 }: {
     placeholder: string,
     onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    value: string,
+    value?: string,
     className?: string,
     inputClassName?: string,
 }) => {

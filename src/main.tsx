@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <MainContextProvider>
         <App />
-        <ToastContainer className={'text-sm '} draggable limit={2} />
+        <ToastContainer className={'text-xs  cursor-pointer'} closeOnClick draggable limit={2}  autoClose={900}/>
       </MainContextProvider>
     </StrictMode>
   </BrowserRouter>,
