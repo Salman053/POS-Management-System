@@ -1,7 +1,30 @@
 @tailwind base;
 @tailwind components;
 
+@media print {
+  @page {
+    margin: 1cm;
+  }
 
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .Card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
 body{
   overflow-y: hidden;
 }

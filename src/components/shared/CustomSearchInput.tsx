@@ -44,15 +44,16 @@ const CustomSearchInput = ({
     className = '',
     inputClassName = '',
 }: {
-    placeholder: string,
-    onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    placeholder?: string,
+    onSearchChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
     value?: string,
     className?: string,
     inputClassName?: string,
 }) => {
     return (
         <SearchInput
-            value={value}
+            value={value as string}
+
             placeholder={placeholder}
             iconClassName="text-gray-400"
             className={`w-full  ${className}`}

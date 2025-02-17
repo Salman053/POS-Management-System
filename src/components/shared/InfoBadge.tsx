@@ -1,11 +1,10 @@
 import { cn } from "@/lib/utils";
 import { CheckCircle, AlertTriangle, XCircle, Info } from "lucide-react";
-
 const variantStyles = {
-  success: "bg-green-100 text-green-800 border-green-300",
-  warning: "bg-yellow-100 text-yellow-800 border-yellow-300",
-  error: "bg-red-100 text-red-800 border-red-300",
-  info: "bg-blue-100 text-blue-800 border-blue-300",
+  success: "bg-green-100 text-green-800 border-green-300 animate-success",
+  warning: "bg-yellow-100 text-yellow-800 border-yellow-300 animate-warning",
+  error: "bg-red-100 text-red-800 border-red-300 animate-shake",
+  info: "bg-blue-100 text-blue-800 border-blue-300 animate-fade",
 };
 
 const iconMap = {
@@ -24,19 +23,31 @@ const sizeStyles = {
 import { ReactNode } from "react";
 
 type Variant = 'success' | 'warning' | 'error' | 'info';
-
-const InfoBadge = ({ variant = "info", size = "md", children, message, icon = true }: { variant?: Variant, message?: string, size?: keyof typeof sizeStyles, children?: ReactNode, icon?: boolean }) => {
+const InfoBadge = ({ variant = "info", size = "md", children, message, icon = true }: { 
+  variant?: Variant, 
+  message?: string, 
+  size?: keyof typeof sizeStyles, 
+  children?: ReactNode, 
+  icon?: boolean 
+}) => {
   return (
     <div
       className={cn(
         "flex items-center gap-2 border text-sm rounded-lg font-medium",
+        "transition-all duration-900",
         variantStyles[variant],
         sizeStyles[size]
       )}
     >
-      {icon && iconMap[variant]}
-      {message && <span>{message}</span>}
-      <span>{children}</span>
+      {icon && (
+        <span className="animate-bounce-gentle">
+          {iconMap[variant]}
+        </span>
+      )}
+      <div className="flex-1">
+        {message && <span>{message}</span>}
+        <span>{children}</span>
+      </div>
     </div>
   );
 };

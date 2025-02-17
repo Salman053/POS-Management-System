@@ -127,7 +127,6 @@ const Customers = () => {
             const exportConfig = {
                 fileName: 'customers',
                 excludeFields: ['id', 'docId', "userId", "createdAt", 'updatedAt'],
-
             };
 
             exportToCSV(customers, exportConfig);
@@ -163,7 +162,6 @@ const Customers = () => {
                             rows={filteredCustomers}
                             selectable={false}
                             pagination={filteredCustomers.length !== 0}
-
                             actions={actions}
                         />
                     ) : (

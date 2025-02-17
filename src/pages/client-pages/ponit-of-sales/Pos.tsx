@@ -15,6 +15,7 @@ import { toast } from "react-toastify"
 
 const Pos = () => {
     const [activeTab, setActiveTab] = useState('featured');
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const [modalState, setModalState] = useState({
         isProductModalOpen: false,
         isInvoiceModalOpen: false,
@@ -147,7 +148,7 @@ const Pos = () => {
                             <CustomSelect label="Customer" options={["Customer 1", "Customer 2"]} />
                             <CustomInput label="Customer Name" />
                             <CustomInput label="Phone" type="number" />
-                            <CustomInput label="Address" className="col-span-2"  />
+                            <CustomInput label="Address" className="col-span-2" />
                             <div className="col-span-2 mt-3">
                                 <Separator />
                             </div>
@@ -192,7 +193,7 @@ const Pos = () => {
                             </div>
                         </div>
                         <div className="flex items-center my-3  justify-end ">
-                            <CustomSearchInput inputClassName="" className="  md:w-[300px]" />
+                            <CustomSearchInput placeholder="Search ... " value={searchQuery} onSearchChange={(e) => setSearchQuery(e.target.value)} inputClassName="" className="  md:w-[300px]" />
                         </div>
 
                         <div className="mt-6">

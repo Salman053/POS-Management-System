@@ -8,7 +8,7 @@ import {
 } from "../ui/select";
 import { cn } from "@/lib/utils";
 
-type OptionType = { label: string; value: string } | string;
+export type OptionType = { label: string; value: string } | string;
 
 type CustomSelectProps = {
   name?: string;

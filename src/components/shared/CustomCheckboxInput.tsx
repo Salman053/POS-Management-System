@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +10,7 @@ interface CustomCheckboxInputProps {
   labelClassName?: string;
   description?: string;
   name?: string;
+  disabled?: boolean;
   checked?: boolean;
 }
 
@@ -20,6 +21,7 @@ const CustomCheckboxInput: FC<CustomCheckboxInputProps> = ({
   className,
   name,
   labelClassName,
+  disabled = false,
   description,
 }) => {
   return (
@@ -27,6 +29,7 @@ const CustomCheckboxInput: FC<CustomCheckboxInputProps> = ({
       <Checkbox
         id="label"
         name={name}
+        disabled={disabled}
         checked={checked}
         className="mr-2 rounded-md"
         onCheckedChange={onChange}

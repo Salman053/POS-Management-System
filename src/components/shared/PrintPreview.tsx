@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 
 interface PrintPreviewProps {
-  documentContent: React.ReactNode;
+  documentContent?: React.ReactNode;
   title?: string;
   onPrint?:any
 }
@@ -97,7 +97,6 @@ const PrintPreview = ({
           Print
         </Button>
       </div>
-
       {/* Preview Content */}
       <div className="flex-1 overflow-auto  bg-gray-50 min-h-[400px]">
         <div className="bg-white shadow-sm   p-6">

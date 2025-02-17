@@ -3,8 +3,8 @@ import { ChangeEvent, FC, ReactNode } from "react";
 import { Textarea } from "../ui/textarea"; 
 
 interface CustomTextAreaProps {
-  label: string;
-  value: string | number;
+  label?: string;
+  value?: string | number;
   inputClassName?: string;
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   error?: string | boolean | any;
@@ -50,7 +50,7 @@ const CustomTextArea: FC<CustomTextAreaProps> = ({
   cols = 50, // Default column count for text area
 }) => {
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col gap-[4px]", className)}>
       <label
         className={cn("input-label capitalize", labelClassName)}
       >

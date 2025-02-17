@@ -1,3 +1,4 @@
+import ErrorBoundary from "@/ErrorBoundary"
 import Add_Edit_Customer from "@/pages/client-pages/customer-pages/Add_Edit_Customer"
 import CustomerDetails from "@/pages/client-pages/customer-pages/CustomerDetails"
 import Customers from "@/pages/client-pages/customer-pages/Customers"
@@ -10,12 +11,13 @@ import Product from "@/pages/client-pages/product-pages/Product"
 import ProductDetails from "@/pages/client-pages/product-pages/ProductDetails"
 import Add_Edit_Sales from "@/pages/client-pages/sales-pages/Add_Edit_Sales"
 import Sales from "@/pages/client-pages/sales-pages/Sales"
+import SalesDetails from "@/pages/client-pages/sales-pages/SalesDetails"
 import { Navigate, Route, Routes } from "react-router-dom"
 
 const ClientRoutes = () => {
     return (
         <Routes>
-            <Route path="/home" element={<Home/>} />
+            <Route path="/home" element={<Home />} />
             <Route path="/products" element={<Product />} />
             <Route path="/products/details" element={<ProductDetails />} />
             <Route path="/products/add-product" element={<Add_Edit_Product />} />
@@ -25,13 +27,16 @@ const ClientRoutes = () => {
             <Route path="/customers/customer-details" element={<CustomerDetails />} />
             <Route path="/customers/add-customer" element={<Add_Edit_Customer />} />
 
-            <Route path="/sales/add-sales" element={<Add_Edit_Sales />} />
+            <Route path="/sales/add-sales" element={<ErrorBoundary>
+                <Add_Edit_Sales />
+            </ErrorBoundary>} />
             <Route path="/sales" element={<Sales />} />
+            <Route path="/sales/sales-details" element={<SalesDetails />} />
 
 
             <Route path="/pos" element={<Pos />} />
-            <Route path="*" element={<Navigate to='/shop/home' replace/>} />
-        
+            <Route path="*" element={<Navigate to='/shop/home' replace />} />
+
 
         </Routes>
     )

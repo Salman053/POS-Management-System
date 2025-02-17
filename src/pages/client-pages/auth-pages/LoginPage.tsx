@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import CustomInput from '@/components/shared/CustomInput';
-import { toast } from 'react-toastify';
 import { logIn } from '@/firebase/auth-logic/auth';
 import { Button } from '@/components/ui/button';
-import { Lock, RotateCcw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { useMainContext } from '@/context/MainContext';
 import { MainContextType } from '@/types';
 import { useNavigate } from 'react-router-dom';
@@ -101,7 +100,7 @@ const LoginPage: React.FC = () => {
                 onChange={handleInputChange}
                 error={errors.password}
               />
-              <CustomCheckboxInput label='Show Password' onChange={() => setIsPasswordVisible(!isPasswordVisible)} />
+              <CustomCheckboxInput disabled={loading} label='Show Password' onChange={() => setIsPasswordVisible(!isPasswordVisible)} />
             </div>
             <Button disabled={loading} type="submit" className="w-full ">
               Sign in &nbsp;{loading && <RotateCcw className='animate-spin' />}

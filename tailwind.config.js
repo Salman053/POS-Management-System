@@ -4,6 +4,38 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      keyframes: {
+        shake: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "10%, 30%, 50%, 70%, 90%": { transform: "translateX(-2px)" },
+          "20%, 40%, 60%, 80%": { transform: "transl  ateX(2px)" },
+        },
+        success: {
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "50%": { transform: "scale(1.02)" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        warning: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "10%, 30%, 50%, 70%, 90%": { transform: "translateY(-1px)" },
+          "20%, 40%, 60%, 80%": { transform: "translateY(1px)" },
+        },
+        fade: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "bounce-gentle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-2px)" },
+        },
+      },
+      animation: {
+        shake: "shake 0.5s ease-in-out",
+        success: "success 0.3s ease-out",
+        warning: "warning 2s ease-in-out infinite",
+        fade: "fade 0.3s ease-out",
+        "bounce-gentle": "bounce-gentle 2s ease-in-out infinite",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

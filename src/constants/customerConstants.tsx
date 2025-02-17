@@ -1,4 +1,4 @@
-import { DataTableColumnProps } from "@/types";
+import { DataTableColumnProps, SalesType } from "@/types";
 import { BadgeDollarSign, House, ShoppingBasket, ShoppingCart, UsersRound, Wallet } from "lucide-react";
 
 export const NavTabs = [
@@ -459,7 +459,7 @@ export const salesColumns: DataTableColumnProps[] = [
   },
   {
     label: 'Date/Time',
-    key: 'dateTime',
+    key: 'date',
     sortable: true
   }
 
@@ -469,7 +469,7 @@ export const salesColumns: DataTableColumnProps[] = [
     sortable: true
   }, {
     label: "Paid Bill",
-    key: "paidBill",
+    key: "paidAmount",
     sortable: true
   }
   , {
@@ -477,6 +477,11 @@ export const salesColumns: DataTableColumnProps[] = [
     key: "phone",
     sortable: false
   }
+  // , {
+  //   label: "Phone",
+  //   key: "products",
+  //   sortable: false
+  // }
 ]
 
 export const salesRows = [

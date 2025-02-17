@@ -2,6 +2,7 @@
 export type MainContextType = {
   currentUser: any;
   expenses: ExpenseType[]
+  sales: SalesType[]
   dues: DuesType[]
   payments: PaymentType[]
   customers: CustomerType[]
@@ -91,6 +92,29 @@ export interface PaymentType {
 
 
 export interface DuesType extends PaymentType {}
+
+
+
+export interface SalesType {
+    id?: string;
+    date: string;
+    remainingAmount?:number|string
+    customerId: string;
+    customerName: string;
+    phone: string;
+    address: string;
+    paidAmount: number|string;
+    userId:string,
+    note?: string;
+    totalBill:number|string
+    createdAt?: any;
+    updatedAt?: any;
+    products: ProductType[]
+  }
+
+
+
+
 export type DataTableColumnProps = {
   label: string;
   key: string;

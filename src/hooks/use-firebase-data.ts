@@ -1,5 +1,5 @@
 import { db } from '@/firebase';
-import { CustomerType, DuesType, ExpenseType, PaymentType, ProductType } from '@/types';
+import { CustomerType, DuesType, ExpenseType, PaymentType, ProductType, SalesType } from '@/types';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
@@ -8,6 +8,7 @@ export const useFirestoreData = () => {
     const [products, setProducts] = useState<ProductType[]>([]);
     const [payments, setPayments] = useState<PaymentType[]>([]);
     const [expenses, setExpenses] = useState<ExpenseType[]>([]);
+    const [sales, setSales] = useState<SalesType[]>([]);
     const [customers, setCustomers] = useState<CustomerType[]>([]);
     const [dues, setDues] = useState<DuesType[]>([])
     const [loading, setLoading] = useState<boolean>(true);
@@ -48,6 +49,11 @@ export const useFirestoreData = () => {
                 setPayments(paymentsData as any)
             }, handleError);
 
+            const unsubscribeSales = onSnapshot(collection(db, 'sales'), (snapshot) => {
+                const salesData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
+                setSales(salesData as any)
+            }, handleError);
+
 
 
             setLoading(false);
@@ -58,6 +64,7 @@ export const useFirestoreData = () => {
                 unsubscribeCustomers()
                 unsubscribePayments()
                 unsubscribeDues()
+                unsubscribeSales()
 
             };
         };
@@ -74,5 +81,5 @@ export const useFirestoreData = () => {
         setLoading(false);
     };
 
-    return { users, loading, error, products, expenses, customers, dues, payments };
+    return { users, loading, error, products, expenses, customers, dues, payments ,sales};
 };
