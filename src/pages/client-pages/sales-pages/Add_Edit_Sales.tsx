@@ -42,7 +42,7 @@ const Add_Edit_Sales = () => {
     () => [
       ...customers
         .filter((c) => c.userId === currentUser.docId)
-        .map((c) => ({ label: c.customerName, value: c.docId })),
+        .map((c) => ({ label: c.customerName, value: c.id })),
       { label: "New Customer", value: "new_customer" },
     ],
     [customers, currentUser.docId],
@@ -75,7 +75,7 @@ const Add_Edit_Sales = () => {
         toast.success("Sales added successfully")
         formik.resetForm()
         setSelectedProducts([])
-      }).catch(()=>{
+      }).catch(() => {
         toast.error("Operation failed")
       })
 
@@ -101,7 +101,7 @@ const Add_Edit_Sales = () => {
           address: "",
         });
       } else {
-        const selectedCustomer = customers.find((c) => c.docId === value);
+        const selectedCustomer = customers.find((c) => c.id === value);
 
         if (!selectedCustomer) {
           console.error("Customer not found");
@@ -111,7 +111,7 @@ const Add_Edit_Sales = () => {
         // Use setValues for batch updates
         formik.setValues({
           ...formik.values,
-          customerId: selectedCustomer.docId || "",
+          customerId: selectedCustomer.id || "",
           customerName: selectedCustomer.customerName || "",
           phone: selectedCustomer.contactNo || "",
           address: selectedCustomer.address || "",
@@ -192,14 +192,6 @@ const Add_Edit_Sales = () => {
           </CardHeader>
           <CardContent >
             <div className="grid grid-cols-2 mb-8 gap-6">
-
-              <CustomInput
-                label="Name"
-                name="customerName"
-                value={formik.values.customerName}
-                onChange={formik.handleChange}
-                error={formik.touched.customerName && formik.errors.customerName}
-              />
               <CustomSelect
                 label="Customer"
                 options={customerOptions as OptionType[]}
@@ -208,6 +200,14 @@ const Add_Edit_Sales = () => {
                 value={formik.values.customerId}
                 error={formik.touched.customerId && formik.errors.customerId}
               />
+              <CustomInput
+                label="Name"
+                name="customerName"
+                value={formik.values.customerName}
+                onChange={formik.handleChange}
+                error={formik.touched.customerName && formik.errors.customerName}
+              />
+
               <CustomInput
                 label="Phone"
                 placeholder="Phone Number"

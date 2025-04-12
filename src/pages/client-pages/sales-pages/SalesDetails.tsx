@@ -4,11 +4,33 @@ import { Button } from "@/components/ui/button"
 import { SalesType, ProductType } from "@/types"
 import { useLocation } from "react-router-dom"
 import { Package, Printer } from "lucide-react"
-import { useReactToPrint } from 'react-to-print'
 import { useEffect, useRef, useState } from 'react'
+
+interface PaymentType {
+    customerId?: string
+    salesId: string
+    paidAmount: number
+    remainingAmount: number
+    paymentDate: string
+    userId: string
+    customerName: string
+    phone?: string
+    address?: string
+    note?: string
+}
+
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore"
+import { db } from "@/firebase"
+import { auth } from "@/firebase"
+// import { PaymentType } from "@/types" // if defined separately
+import { toast } from "react-toastify"
+import PaymentForm from "../customer-pages/PaymentForm"
+import Overlay from "@/components/shared/Overlay"
+
 
 const SaleDetails = () => {
     const { sale }: { sale: SalesType } = useLocation().state || {}
+    const [isPaymentModalOpen,setPaymentModalOpen] = useState(false)
     const [isPrinting, setIsPrinting] = useState(false)
     const printRef = useRef<HTMLDivElement>(null)
 
@@ -54,6 +76,78 @@ const SaleDetails = () => {
 
         setIsPrinting(false)
     }
+
+
+    const addPayment = async (paymentData: PaymentType) => {
+        try {
+            const currentUser = auth.currentUser
+            if (!currentUser) throw new Error("User not authenticated")
+
+            const paymentWithMeta = {
+                ...paymentData,
+                paymentDate: new Date().toISOString(),
+                userId: currentUser.uid,
+            }
+
+            // 1. Add Payment to 'payments' collection
+            await addDoc(collection(db, "payments"), paymentWithMeta)
+
+            // 2. If customer exists, update their totalDues and paidAmount
+            if (paymentData.customerId && paymentData.customerId !== "new_customer") {
+                const customerRef = doc(db, "customers", paymentData.customerId)
+                const customerSnap = await getDoc(customerRef)
+
+                if (customerSnap.exists()) {
+                    const existingData = customerSnap.data()
+                    const newTotalDues =
+                        Number(existingData.totalDues || 0) - paymentData.paidAmount
+                    const newPaidAmount =
+                        Number(existingData.paidAmount || 0) + paymentData.paidAmount
+
+                    await updateDoc(customerRef, {
+                        totalDues: newTotalDues,
+                        paidAmount: newPaidAmount,
+                    })
+                }
+            }
+
+            return true
+        } catch (error) {
+            console.error("Error adding payment:", error)
+            throw error
+        }
+    }
+
+
+    const handlePayRemaining = async () => {
+        const remainingAmount = Number(sale.totalBill) - Number(sale.paidAmount)
+
+        if (remainingAmount <= 0) {
+            toast.warning("No remaining dues.")
+            return
+        }
+
+        try {
+            await addPayment({
+                salesId: sale.id || "",
+                customerId: sale.customerId,
+                paidAmount: remainingAmount,
+                remainingAmount: 0,
+                customerName: sale.customerName,
+                phone: sale.phone,
+                address: sale.address,
+                note: "Full remaining payment made",
+                paymentDate: "",
+                userId: auth.currentUser?.uid || ""
+            })
+
+            toast.success("Payment added and customer dues updated successfully!")
+        } catch (err) {
+            console.error(err)
+            toast.error("Failed to add payment.")
+        }
+    }
+
 
     return (
         <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -133,6 +227,17 @@ const SaleDetails = () => {
                                     </dd>
                                 </div>
                             </dl>
+                            {Number(sale.totalBill) - Number(sale.paidAmount) > 0 && (
+                                <div className="mt-4">
+                                    <Button
+                                        className="bg-green-600 hover:bg-green-700"
+                                        onClick={() => setPaymentModalOpen(true)}
+                                    >
+                                        Pay Remaining Rs. {Number(sale.totalBill) - Number(sale.paidAmount)}
+                                    </Button>
+                                </div>
+                            )}
+
                         </CardContent>
                     </Card>
                 </div>
@@ -191,6 +296,28 @@ const SaleDetails = () => {
                     </Card>
                 )}
             </div>
+          <Overlay isOpen={isPaymentModalOpen} onClose={() => setPaymentModalOpen(false)}>
+          <PaymentForm
+            
+            currentDues={Number(sale.totalBill) - Number(sale.paidAmount)}
+            onCancel={() => setPaymentModalOpen(false)}
+            onSubmit={async (formValues) => {
+                await addPayment({
+                    salesId: sale.id,
+                    customerId: sale.customerId,
+                    paidAmount: formValues.paidAmount,
+                    remainingAmount: formValues.remainingAmount,
+                    customerName: sale.customerName,
+                    phone: sale.phone,
+                    paymentDate: formValues.paymentDate,
+                    userId: auth.currentUser?.uid||"",
+                    address: sale.address,
+                    note: formValues.note,
+                }).then(() => toast.success("Payment recorded."))
+            }}
+        />
+          </Overlay>
+
         </div>
     )
 }

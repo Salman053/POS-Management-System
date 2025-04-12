@@ -3,39 +3,53 @@ import { ProductType, SalesType } from '@/types';
 import { db } from '..';
 
 export const insertSales = async (salesData: SalesType) => {
-    try {
-        // Check product availability first
-        const availabilityCheck = await checkProductAvailability(salesData.products);
-        if (!availabilityCheck.available) {
-            throw new Error(`Insufficient stock for product: ${availabilityCheck.productName}`);
-        }
-
-        // Add timestamp and calculate total
-        const dataWithTimestamp = {
-            ...salesData,
-            createdAt: new Date().toISOString(),
-            totalAmount: salesData.products.reduce((total, product) => 
-                total + (product.quantity * product.salesPrice), 0)
-        };
-
-        // Add document to sales collection
-        const docRef = await addDoc(collection(db, 'sales'), dataWithTimestamp);
-
-        // Update customer's balance only if it's not a new customer
-        if (salesData.customerId !== 'new_customer') {
-            await updateCustomerBalance(
-                salesData.customerId,
-                Number(salesData.remainingAmount),
-                Number(salesData.paidAmount)
-            );
-        }
-        // Update product quantities
-        await updateProductQuantities(salesData.products);
-        return docRef.id;
-    } catch (error) {
-        console.error('Error adding sales:', error);
-        throw error;
+  try {
+    // 1. Check product availability
+    const availabilityCheck = await checkProductAvailability(salesData.products);
+    if (!availabilityCheck.available) {
+      throw new Error(`Insufficient stock for product: ${availabilityCheck.productName}`);
     }
+
+    // 2. Prepare sales document
+    const dataWithTimestamp = {
+      ...salesData,
+      createdAt: new Date().toISOString(),
+      totalAmount: salesData.products.reduce(
+        (total, product) => total + product.quantity * product.salesPrice,
+        0
+      ),
+    };
+
+    // 3. Add sales document to Firestore
+    const docRef = await addDoc(collection(db, "sales"), dataWithTimestamp);
+
+    // 4. Update customer's balance & dues if it's not a new customer
+    if (salesData.customerId !== "new_customer") {
+      const customerRef = doc(db, "customers", salesData.customerId);
+      const customerSnap = await getDoc(customerRef);
+
+      if (customerSnap.exists()) {
+        const customerData = customerSnap.data();
+        const prevDues = Number(customerData.totalDues) || 0;
+        const newDues = Number(salesData.remainingAmount) || 0;
+
+        const updatedDues = prevDues + newDues;
+
+        await updateDoc(customerRef, {
+          balance: Number(salesData.remainingAmount),
+          totalDues: updatedDues,
+        });
+      }
+    }
+
+    // 5. Update product stock
+    await updateProductQuantities(salesData.products);
+
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding sales:", error);
+    throw error;
+  }
 };
 
 // Add this new helper function
@@ -172,4 +186,9 @@ export const deleteSales = async (salesId: string): Promise<void> => {
       throw new Error('Failed to delete sales');
     }
   };
+  
+
+
+
+
   

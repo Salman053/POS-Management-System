@@ -6,16 +6,49 @@ import useScrollToTop from "./hooks/use-scroll-restore";
 import AuthRoutes from "./routes/auth-routes/AuthRoutes";
 import { useMainContext } from "./context/MainContext";
 import { MainContextType } from "./types";
+import { useEffect, useState } from "react";
+import FloatingAlert from "./components/shared/FloatingAlert";
+import { toast } from "react-toastify";
+import CustomToast from "./components/shared/CustomToast";
 
 const App = () => {
   const location = useLocation();
-  const { currentUser } = useMainContext() as MainContextType;
+  const { currentUser, customers, products } = useMainContext() as MainContextType;
 
+  const lowStockProducts = products.filter(
+    (product) => product.quantity < product.alertQuantity
+  );
 
-  // scroll to top
+  const customersWithDues = customers.filter(
+    (customer) => customer.totalDues && customer.totalDues > 0
+  );
+
+  const addAlert = (id: string, message: string) => {
+    const dismissed = JSON.parse(localStorage.getItem("dismissedAlerts") || "[]");
+    if (dismissed.includes(id)) return;
+  
+    toast(<CustomToast id={id} message={message} />, {
+      position: "top-right",
+      autoClose: false, // Manual close with button
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      hideProgressBar: true,
+      type: message.includes("dues") ? "error" : "warning",
+    });
+  };
+  useEffect(() => {
+    lowStockProducts.forEach((product) =>
+      addAlert(`product-${product.id}`, `${product.productName} is low on stock! Only ${product.quantity} left.`)
+    );
+  
+    customersWithDues.forEach((customer) =>
+      addAlert(`customer-${customer.id}`, `${customer.customerName} has outstanding dues of ₹${customer.totalDues}.`)
+    );
+  }, [lowStockProducts, customersWithDues]);
+  
+
   useScrollToTop(location.pathname, '.content-area');
-
-
 
   // Auth routes
   if (!currentUser) {
@@ -27,11 +60,10 @@ const App = () => {
     );
   }
 
- 
-
   // Protected routes
   return (
     <div className="flex h-screen overflow-y-hidden select-none bg-gray-50">
+
       <Sidebar />
       <div className="main flex-1">
         <Header />

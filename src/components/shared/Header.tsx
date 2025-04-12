@@ -1,20 +1,14 @@
-import {
-  Bell,
-} from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import UserProfileMenu from './UserProfileMenu';
 import FullscreenButton from './FullScreenButton';
+import { useMainContext } from '@/context/MainContext';
+import { MainContextType } from '@/types';
+import { logOut } from '@/firebase/auth-logic/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
+  const { currentUser } = useMainContext() as MainContextType
+  const navigate  = useNavigate()
 
   return (
     <header className="border-b flex items-center justify-between bg-white ">
@@ -22,10 +16,10 @@ const Header = () => {
 
 
         {/* Logo & Welcome Message */}
-          <div className="">
-            <h2 className="md:text-xl font-bold">Eazy POS Solution</h2>
-            <p className="md:text-sm text-xs text-muted-foreground">Welcome back, Salman 👋🏻</p>
-          </div>
+        <div className="">
+          <h2 className="md:text-xl font-bold">Eazy POS Solution</h2>
+          <p className="md:text-sm text-xs text-muted-foreground">Welcome back, {currentUser.username} 👋🏻</p>
+        </div>
 
         {/* Search Bar - Hidden on Mobile
         <div className="hidden md:flex flex-1 items-center justify-center">
@@ -63,7 +57,7 @@ const Header = () => {
               </Button>
             </div>
             {/* Sample Notifications */}
-            {/* <DropdownMenuItem className="p-4">
+        {/* <DropdownMenuItem className="p-4">
               <div className="flex items-center gap-4">
                 <Avatar>
                   <AvatarImage src="/placeholder.jpg" />
@@ -79,7 +73,10 @@ const Header = () => {
         </DropdownMenu>  */}
 
 
-        <UserProfileMenu userEmail='salmankhanm859@gmail.com' />
+        <UserProfileMenu menuItems={[
+          { label: 'Settings', onClick: async () => navigate("/shop/settings") },
+          { label: 'Sign out', onClick: () => logOut() }
+        ]} userEmail={currentUser.email} />
         <FullscreenButton />
 
       </div>

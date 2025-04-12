@@ -67,7 +67,7 @@ export interface ExpenseType {
 }
 
 export interface CustomerType {
-  docId?: string;
+  id?: string;
   customerName: string;
   address?: string;
   contactNo: string;

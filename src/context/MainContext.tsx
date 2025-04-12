@@ -49,7 +49,7 @@ const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
 
-  const { users, loading, error, products, expenses, customers, dues, payments,sales } = useFirestoreData()
+  const { users, loading, error, products, expenses, customers, dues, payments,sales } = useFirestoreData(currentUser)
   // Define the values to provide through context
   const contextValue = {
     theme,

@@ -1,9 +1,12 @@
+import { useMainContext } from '@/context/MainContext';
 import { db } from '@/firebase';
-import { CustomerType, DuesType, ExpenseType, PaymentType, ProductType, SalesType } from '@/types';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { CustomerType, DuesType, ExpenseType, MainContextType, PaymentType, ProductType, SalesType } from '@/types';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
-export const useFirestoreData = () => {
+export const useFirestoreData = (currentUser: any) => {
+
+    // const { currentUser } = useMainContext() as MainContextType
     const [users, setUsers] = useState<any[]>([]);
     const [products, setProducts] = useState<ProductType[]>([]);
     const [payments, setPayments] = useState<PaymentType[]>([]);
@@ -15,65 +18,54 @@ export const useFirestoreData = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+
         const fetchData = () => {
             setLoading(true);
             setError(null);
 
-            const unsubscribeUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
-                const usersData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setUsers(usersData)
-            }, handleError);
+            const uid = currentUser?.docId;
 
+            if (!uid) return;
 
-            const unsubscribeProducts = onSnapshot(collection(db, 'products'), (snapshot) => {
-                const productsData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setProducts(productsData as any)
-            }, handleError);
-            const unsubscribeExpenses = onSnapshot(collection(db, 'expenses'), (snapshot) => {
-                const expenseData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setExpenses(expenseData as any)
-            }, handleError);
+            const handleSnapshot = (colName: string, setState: (data: any[]) => void) => {
+                const q = query(collection(db, colName), where('userId', '==', uid));
+                return onSnapshot(q, (snapshot) => {
+                    const data = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        docId: doc.id,
+                        ...doc.data()
+                    }));
+                    setState(data);
+                }, handleError);
+            };
 
-            const unsubscribeCustomers = onSnapshot(collection(db, 'customers'), (snapshot) => {
-                const customerData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setCustomers(customerData as any)
-            }, handleError);
-
-            const unsubscribeDues = onSnapshot(collection(db, 'dues'), (snapshot) => {
-                const duesData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setDues(duesData as any)
-            }, handleError);
-
-            const unsubscribePayments = onSnapshot(collection(db, 'payments'), (snapshot) => {
-                const paymentsData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setPayments(paymentsData as any)
-            }, handleError);
-
-            const unsubscribeSales = onSnapshot(collection(db, 'sales'), (snapshot) => {
-                const salesData = snapshot.docs.map(doc => ({ id: doc.id, docId: doc.id, ...doc.data() }))
-                setSales(salesData as any)
-            }, handleError);
-
-
+            const unsubscribeUsers = handleSnapshot('users', setUsers); // Optional: depends on access model
+            const unsubscribeProducts = handleSnapshot('products', setProducts);
+            const unsubscribeExpenses = handleSnapshot('expenses', setExpenses);
+            const unsubscribeCustomers = handleSnapshot('customers', setCustomers);
+            const unsubscribeDues = handleSnapshot('dues', setDues);
+            const unsubscribePayments = handleSnapshot('payments', setPayments);
+            const unsubscribeSales = handleSnapshot('sales', setSales);
 
             setLoading(false);
-            return () => {
-                unsubscribeUsers();
-                unsubscribeProducts()
-                unsubscribeExpenses()
-                unsubscribeCustomers()
-                unsubscribePayments()
-                unsubscribeDues()
-                unsubscribeSales()
 
+            return () => {
+                unsubscribeUsers?.();
+                unsubscribeProducts?.();
+                unsubscribeExpenses?.();
+                unsubscribeCustomers?.();
+                unsubscribePayments?.();
+                unsubscribeDues?.();
+                unsubscribeSales?.();
             };
         };
 
 
 
-
-        fetchData();
-    }, []);
+        if (currentUser) {
+            fetchData()
+        }
+    }, [currentUser]);
 
     const handleError = (error: any) => {
         console.error('Error fetching data:', error);
@@ -81,5 +73,5 @@ export const useFirestoreData = () => {
         setLoading(false);
     };
 
-    return { users, loading, error, products, expenses, customers, dues, payments ,sales};
+    return { users, loading, error, products, expenses, customers, dues, payments, sales };
 };

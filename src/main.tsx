@@ -7,12 +7,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <StrictMode>
-      <MainContextProvider>
+  <MainContextProvider>
+    <BrowserRouter>
+      <StrictMode>
         <App />
-        <ToastContainer className={'text-xs  cursor-pointer'} closeOnClick draggable limit={2}  autoClose={900}/>
-      </MainContextProvider>
-    </StrictMode>
-  </BrowserRouter>,
+        <ToastContainer className={'text-xs  cursor-pointer'} closeOnClick draggable limit={2} autoClose={900} />
+      </StrictMode>
+    </BrowserRouter>,
+  </MainContextProvider>
 )

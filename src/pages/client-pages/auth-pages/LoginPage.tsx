@@ -105,6 +105,12 @@ const LoginPage: React.FC = () => {
             <Button disabled={loading} type="submit" className="w-full ">
               Sign in &nbsp;{loading && <RotateCcw className='animate-spin' />}
             </Button>
+            <div className="text-center mt-4">
+              <span className="text-gray-500">Don't have an account? </span>
+              <a onClick={() => navigate('/auth/register')} className="text-blue-600 hover:underline">
+                Register
+              </a>
+            </div>
           </form>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { DataTableColumnProps, SalesType } from "@/types";
-import { BadgeDollarSign, House, ShoppingBasket, ShoppingCart, UsersRound, Wallet } from "lucide-react";
+import { BadgeDollarSign, Bell, House, ShoppingBag, ShoppingBasket, ShoppingCart, UsersRound, Wallet } from "lucide-react";
 
 export const NavTabs = [
 
@@ -34,11 +34,23 @@ export const NavTabs = [
     icon: BadgeDollarSign,
     filledIcon: BadgeDollarSign
   },
+  // {
+  //   path: '/shop/pos',
+  //   label: 'POS',
+  //   icon: ShoppingBasket,
+  //   filledIcon: ShoppingBasket
+  // },
   {
-    path: '/shop/pos',
-    label: 'POS',
-    icon: ShoppingBasket,
-    filledIcon: ShoppingBasket
+    path: '/shop/alerts',
+    label: 'Tracking',
+    icon: Bell,
+    filledIcon: Bell
+  },
+  {
+    path: '/shop/recommendations',
+    label: "AI",
+    icon: ShoppingBag,
+    filledIcon: ShoppingBag
   },
 
 
@@ -538,7 +550,7 @@ export const DashboardRecentSalesColumns: DataTableColumnProps[] = [
   },
   {
     label: "Date/Time",
-    key: "dateTime",
+    key: "date",
     sortable: true
   },
   // {

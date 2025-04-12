@@ -1,4 +1,5 @@
 import ErrorBoundary from "@/ErrorBoundary"
+import Alerts from "@/pages/client-pages/alerts/Alerts"
 import Add_Edit_Customer from "@/pages/client-pages/customer-pages/Add_Edit_Customer"
 import CustomerDetails from "@/pages/client-pages/customer-pages/CustomerDetails"
 import Customers from "@/pages/client-pages/customer-pages/Customers"
@@ -9,9 +10,12 @@ import Pos from "@/pages/client-pages/ponit-of-sales/Pos"
 import Add_Edit_Product from "@/pages/client-pages/product-pages/Add_Edit_Product"
 import Product from "@/pages/client-pages/product-pages/Product"
 import ProductDetails from "@/pages/client-pages/product-pages/ProductDetails"
+import ProductRecommendations from "@/pages/client-pages/recommendation/RecommendationComp"
 import Add_Edit_Sales from "@/pages/client-pages/sales-pages/Add_Edit_Sales"
 import Sales from "@/pages/client-pages/sales-pages/Sales"
 import SalesDetails from "@/pages/client-pages/sales-pages/SalesDetails"
+import SettingsPage from "@/pages/client-pages/setting/Setting"
+import GeminiChat from "@/pages/GeminiChat"
 import { Navigate, Route, Routes } from "react-router-dom"
 
 const ClientRoutes = () => {
@@ -35,6 +39,10 @@ const ClientRoutes = () => {
 
 
             <Route path="/pos" element={<Pos />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/chat" element={<GeminiChat />} />
+            <Route path="/settings" element={<SettingsPage/>} />
+            <Route path="/recommendations" element={<ProductRecommendations/>} />
             <Route path="*" element={<Navigate to='/shop/home' replace />} />
 
 

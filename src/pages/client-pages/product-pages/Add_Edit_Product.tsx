@@ -13,6 +13,7 @@ import { cleanPrice } from '@/lib/helpers'
 import { insertProduct, updateProduct } from '@/firebase/product-logic'
 import { MainContextType, ProductType } from '@/types'
 import { useMainContext } from '@/context/MainContext'
+import CustomSelect from '@/components/shared/CustomSelect'
 
 interface LocationState {
     product?: ProductType
@@ -155,11 +156,19 @@ const AddEditProduct = () => {
                                 error={formik.touched.productName ? formik.errors.productName : ""}
                             />
 
-                            <CustomInput
+                            <CustomSelect
                                 name="productCategory"
+                                options={[
+                                    { value: "Grocery", label: "Grocery" },
+                                    { value: "Electronics", label: "Electronics" },
+                                    { value: "Clothing", label: "Clothing" },
+                                    { value: "Furniture", label: "Furniture" },
+                                    { value: "Other", label: "Other" },
+                                ]
+                                }
                                 label="Product Category"
                                 value={formik.values.productCategory}
-                                onChange={formik.handleChange}
+                                onChange={(value)=>formik.setFieldValue("productCategory", value)}
                                 error={formik.touched.productCategory ? formik.errors.productCategory : ""}
                             />
 

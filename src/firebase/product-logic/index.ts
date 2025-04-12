@@ -17,6 +17,7 @@ export const insertProduct = async (productData: Omit<ProductType, 'id'>): Promi
             updatedAt: new Date().toISOString()
         };
 
+        console.log(newProduct)
         await setDoc(newDocRef, newProduct);
         return newDocRef.id;
     } catch (error) {
