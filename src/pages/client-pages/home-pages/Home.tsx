@@ -32,6 +32,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selectedYear, setSelectedYear] = useState<string>("2025")
   const { customers, products, payments, expenses, sales, dues } = useMainContext() as MainContextType
+  // console.log(sales)
+  // console.log(expenses)
 
   // Calculate total revenue (sum of all sales totalAmount)
   const totalRevenue = useMemo(() => {
@@ -302,6 +304,8 @@ const Home = () => {
           <DashboardCard key={index} {...item} />
         ))}
       </div>
+
+       
 
       <Card className="bg-white hidden md:block mb-6 dark:bg-gray-800 rounded-2xl">
         <CardHeader className="flex flex-wrap justify-center flex-row items-center md:justify-between">

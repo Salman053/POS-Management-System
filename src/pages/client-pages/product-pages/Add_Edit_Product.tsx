@@ -95,7 +95,7 @@ const AddEditProduct = () => {
                 if (product) {
                     await updateProduct(product.docId as string, productData as ProductType)
                     toast.success("Product updated successfully")
-                    navigate('/products')
+                    navigate(-1)
                 } else {
                     await insertProduct(productData as ProductType)
                     toast.success("Product added successfully")

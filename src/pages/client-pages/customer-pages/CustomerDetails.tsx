@@ -2,7 +2,7 @@ import { CustomerType, DuesType, MainContextType, PaymentType } from '@/types';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowLeft, Phone, MapPin, Mail, Edit, Plus, Trash2, Pencil } from 'lucide-react';
+import { ArrowLeft, Phone, MapPin,  Edit, Plus, Trash2, Pencil } from 'lucide-react';
 import { useMainContext } from '@/context/MainContext';
 import { useEffect, useState } from 'react';
 import { createDues, createPayment, deleteDues, deletePayment } from '@/firebase/customer-logic';
@@ -18,7 +18,7 @@ const CustomerDetails = () => {
 
     const { dues, payments, currentUser, customers } = useMainContext() as MainContextType;
     const [selectedItem, setSelectedItem] = useState<PaymentType | DuesType | any>(null)
-    const [isLoading, setIsloading] = useState<boolean>(false)
+    const [isLoading, ] = useState<boolean>(false)
     const [customer, setCustomer] = useState<CustomerType | any>({});
     const [modalState, setModalState] = useState({
         isDeletePaymentModal: false,
@@ -78,9 +78,10 @@ const CustomerDetails = () => {
             toast.error(error.message)
         })
     }
+
     useEffect(() => {
         if (customerId && customers?.length) {
-            const foundCustomer = customers.find((cust: CustomerType) => cust.docId === customerId);
+            const foundCustomer = customers.find((cust: CustomerType) => cust.id === customerId);
             setCustomer(foundCustomer || null);
         }
     }, [customerId, customers]);
@@ -263,7 +264,7 @@ const TransactionList = ({ transactions, type, onEdit,
                 No {type} history available
             </p>
         ) : (
-            transactions.map((transaction) => (
+            transactions.slice(0,2).map((transaction) => (
                 <div
                     key={transaction.docId}
                     className="flex justify-between items-center p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition duration-200"

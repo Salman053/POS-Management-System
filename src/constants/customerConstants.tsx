@@ -1,5 +1,5 @@
 import { DataTableColumnProps, SalesType } from "@/types";
-import { BadgeDollarSign, Bell, House, ShoppingBag, ShoppingBasket, ShoppingCart, UsersRound, Wallet } from "lucide-react";
+import { BadgeDollarSign, BarChart, Bell, House, ShoppingBag, ShoppingBasket, ShoppingCart, UsersRound, Wallet } from "lucide-react";
 
 export const NavTabs = [
 
@@ -47,11 +47,17 @@ export const NavTabs = [
     filledIcon: Bell
   },
   {
-    path: '/shop/recommendations',
-    label: "AI",
-    icon: ShoppingBag,
-    filledIcon: ShoppingBag
+    path: '/shop/analytics',
+    label: "Analytics",
+    icon: BarChart,
+    filledIcon: BarChart
   },
+  // {
+  //   path: '/shop/recommendations',
+  //   label: "AI",
+  //   icon: ShoppingBag,
+  //   filledIcon: ShoppingBag
+  // },
 
 
 

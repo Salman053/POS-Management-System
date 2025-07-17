@@ -1,5 +1,6 @@
 import ErrorBoundary from "@/ErrorBoundary"
 import Alerts from "@/pages/client-pages/alerts/Alerts"
+import Analytics from "@/pages/client-pages/analytics/Analytics"
 import Add_Edit_Customer from "@/pages/client-pages/customer-pages/Add_Edit_Customer"
 import CustomerDetails from "@/pages/client-pages/customer-pages/CustomerDetails"
 import Customers from "@/pages/client-pages/customer-pages/Customers"
@@ -40,6 +41,7 @@ const ClientRoutes = () => {
 
             <Route path="/pos" element={<Pos />} />
             <Route path="/alerts" element={<Alerts />} />
+            <Route path="/analytics" element={<Analytics />} />
             <Route path="/chat" element={<GeminiChat />} />
             <Route path="/settings" element={<SettingsPage/>} />
             <Route path="/recommendations" element={<ProductRecommendations/>} />
