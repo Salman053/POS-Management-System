@@ -284,7 +284,7 @@ const TransactionList = ({ transactions, type, onEdit,
 
                     {/* Action Buttons */}
                     <div className="flex gap-2">
-                        {onEdit && (
+                        {/* {onEdit && (
                             <button
                                 onClick={() => onEdit(transaction)}
                                 className="p-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition"
@@ -292,7 +292,7 @@ const TransactionList = ({ transactions, type, onEdit,
                             >
                                 <Pencil size={16} />
                             </button>
-                        )}
+                        )} */}
                         {onDelete && (
                             <button
                                 onClick={() => onDelete(transaction)}

@@ -37,7 +37,7 @@ const Sales = () => {
                 <Button variant={'outline'}>Action <ChevronDown /></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => handleEditSales(row)} >Edit</DropdownMenuItem>
+                {/* <DropdownMenuItem onClick={() => handleEditSales(row)} >Edit</DropdownMenuItem> */}
                 <DropdownMenuItem onClick={() => navigate(`/shop/sales/sales-details`, { state: { sale: row } })}>View Details</DropdownMenuItem>
 
                 <DropdownMenuItem onClick={() => handleDeleteSalesOverlay(row)} >Delete</DropdownMenuItem>
